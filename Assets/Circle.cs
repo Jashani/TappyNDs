@@ -20,6 +20,7 @@ public class Circle : MonoBehaviour {
 	}
 
 	void OnMouseDown () {
+		FindObjectOfType<Score> ().addOnePoint ();
 		Destroy (gameObject);
 	}
 }

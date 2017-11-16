@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Circle.cs" />
      <Compile Include="Assets\CircleSpawner.cs" />
+     <Compile Include="Assets\Score.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
