@@ -11,7 +11,7 @@ public class CircleSpawner : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		radius = circle.GetComponent<CircleCollider2D>().GetRadius();
+		radius = circle.GetComponent<CircleCollider2D> ().radius;
 	}
 	
 	// Update is called once per frame

@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Circle : MonoBehaviour {
 
+	private static Color[] colours = new Color[] { Color.blue, Color.cyan, Color.green, Color.magenta, Color.red, Color.yellow };
+
 	// Use this for initialization
 	void Start () {
-		GetComponent<SpriteRenderer> ().color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+		GetComponent<SpriteRenderer> ().color = colours [Random.Range (0, colours.Length)];
 	}
 	
 	// Update is called once per frame
