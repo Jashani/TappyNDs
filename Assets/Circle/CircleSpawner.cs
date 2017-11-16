@@ -7,14 +7,12 @@ public class CircleSpawner : MonoBehaviour {
 	public GameObject circle;
 	private float radius;
 
-	private int maxChildren = 10;
+	private int maxChildren = 10; // Maxmimum amount of circles
 
-	// Use this for initialization
 	void Start () {
 		radius = circle.GetComponent<CircleCollider2D> ().radius;
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 		if (isTimeToSpawn () && gameObject.transform.childCount < maxChildren) {
 			Spawn ();
@@ -22,9 +20,8 @@ public class CircleSpawner : MonoBehaviour {
 	}
 
 	bool isTimeToSpawn() {
+		// TODO: Make a more efficient function? This one's just kinda gay and I took it from a different project.
 		float spawnDelay = 10;
-		//float spawnsPerSecond = spawnDelay;
-		//Debug.Log (spawnsPerSecond);
 
 		if (Time.deltaTime > spawnDelay) 
 			Debug.LogWarning ("Spawn rate capped by frame rate.");
@@ -35,6 +32,9 @@ public class CircleSpawner : MonoBehaviour {
 	}
 
 	void Spawn() {
+		// TODO: Make circles not spawn on each other, either here or wherever comfortable.
+		// Also try to figure out a way to make them spawn away from the top UI.
+		// If creative enough do as you please, if not we'll just use distance constants or something, I don't know
 		Vector3 screenPosition = Camera.main.ScreenToWorldPoint (new Vector3 (Random.Range (radius, Screen.width-radius), Random.Range (radius, Screen.height-radius), Camera.main.farClipPlane / 2));
 		GameObject newCircle = Instantiate (circle, screenPosition, Quaternion.identity);
 		newCircle.transform.parent = gameObject.transform;
