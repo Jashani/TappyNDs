@@ -5,12 +5,13 @@ using UnityEngine;
 public class CircleSpawner : MonoBehaviour {
 
 	public GameObject circle;
+	private float radius;
 
 	private int maxChildren = 10;
 
 	// Use this for initialization
 	void Start () {
-		
+		radius = circle.GetComponent<CircleCollider2D>().GetRadius();
 	}
 	
 	// Update is called once per frame
@@ -34,7 +35,7 @@ public class CircleSpawner : MonoBehaviour {
 	}
 
 	void Spawn() {
-		Vector3 screenPosition = Camera.main.ScreenToWorldPoint (new Vector3 (Random.Range (0, Screen.width), Random.Range (0, Screen.height), Camera.main.farClipPlane / 2));
+		Vector3 screenPosition = Camera.main.ScreenToWorldPoint (new Vector3 (Random.Range (radius, Screen.width-radius), Random.Range (radius, Screen.height-radius), Camera.main.farClipPlane / 2));
 		GameObject newCircle = Instantiate (circle, screenPosition, Quaternion.identity);
 		newCircle.transform.parent = gameObject.transform;
 	}
