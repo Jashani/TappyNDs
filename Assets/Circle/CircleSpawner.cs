@@ -11,7 +11,7 @@ public class CircleSpawner : MonoBehaviour {
 
 	private float radius;
     private List<GameObject> circlePool;
-    private Color mainCircleColour;
+	private Color mainCircleColour;
     private Color nextCircleColour;
 
 	private int maxChildren = 10; // Maxmimum amount of circles
@@ -19,21 +19,21 @@ public class CircleSpawner : MonoBehaviour {
     private static Color[] colours = new Color[] { Color.cyan, Color.green, Color.magenta, Color.red, Color.yellow };
 
 	void Start () {
-        mainCircleColour = colours [Random.Range (0, colours.Length)];
+		mainCircleColour = colours [Random.Range (0, colours.Length)];
         mainCircleDisplay.color = mainCircleColour;
         nextCircleColour = colours [Random.Range (0, colours.Length)];
         nextCircleDisplay.color = nextCircleColour;
 
-        timeToSpawn = Random.Range(1, 2.5f);
+		timeToSpawn = Random.Range (1, 2.5f);
 
         circlePool = new List<GameObject>();
         for(int i = 0; i < maxChildren; i++)
         {
-            GameObject obj = (GameObject)Instantiate(circle);
-            obj.SetActive(false);
-            circlePool.Add(obj);
+			GameObject obj = (GameObject)Instantiate (circle);
+			obj.SetActive (false);
+			circlePool.Add (obj);
         }
-        radius = circle.GetComponent<CircleCollider2D> ().radius*100;
+		radius = circle.GetComponent<CircleCollider2D> ().radius * 100;
 	}
 
 	void Update () {
@@ -57,23 +57,25 @@ public class CircleSpawner : MonoBehaviour {
 		Vector3 screenPosition = Camera.main.ScreenToWorldPoint (new Vector3 (Random.Range (radius, Screen.width-radius), Random.Range (radius, Screen.height-radius), Camera.main.farClipPlane / 2));
         for(int i = 0; i < circlePool.Count; i++)
         {
-            if(!circlePool[i].activeInHierarchy)
-            {
-                circlePool[i].transform.position = screenPosition;
-                circlePool[i].transform.rotation = Quaternion.identity;
-                circlePool[i].transform.parent = gameObject.transform;
+			if (!circlePool [i].activeInHierarchy) 
+			{
+				circlePool [i].transform.position = screenPosition;
+				circlePool [i].transform.rotation = Quaternion.identity;
+				circlePool [i].transform.parent = gameObject.transform;
 
-                circlePool[i].GetComponent<SpriteRenderer> ().color = mainCircleColour;
-                mainCircleColour = nextCircleColour;
-                mainCircleDisplay.color = mainCircleColour;
-                nextCircleColour = colours [Random.Range (0, colours.Length)];
-                nextCircleDisplay.color = nextCircleColour;
+				circlePool [i].GetComponent<SpriteRenderer> ().color = mainCircleColour;
+				mainCircleColour = nextCircleColour;
+				mainCircleDisplay.color = mainCircleColour;
+				nextCircleColour = colours [Random.Range (0, colours.Length)];
+				nextCircleDisplay.color = nextCircleColour;
 
-                circlePool[i].SetActive(true);
-                break;
-            }
+				circlePool [i].SetActive (true);
+				break;
+			}
         }
         //GameObject newCircle = Instantiate (circle, screenPosition, Quaternion.identity);
 		//newCircle.transform.parent = gameObject.transform;
 	}
+
+	public Color getMain() { return mainCircleColour; }
 }

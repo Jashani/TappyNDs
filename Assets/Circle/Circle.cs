@@ -5,10 +5,12 @@ using UnityEngine;
 public class Circle : MonoBehaviour {
 
 	private Animator anim;
+	private CircleSpawner spawner;
 
     void Start()
     {
         anim = GetComponent<Animator> ();//Should be on Start() so it's only called once, and not every single time the circle re-appears.
+		spawner = FindObjectOfType<CircleSpawner>();
     }
 
 	void OnEnable () {
@@ -27,7 +29,8 @@ public class Circle : MonoBehaviour {
 	}
 
 	void Tapped () { // Called from 'Pop' animation.
-		FindObjectOfType<Score> ().addOnePoint ();
+		if (spawner.getMain() == GetComponent<SpriteRenderer> ().color)
+			FindObjectOfType<Score> ().addOnePoint ();
 		gameObject.SetActive(false);
 	}
 }
