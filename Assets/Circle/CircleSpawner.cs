@@ -16,7 +16,7 @@ public class CircleSpawner : MonoBehaviour {
 
 	private int maxChildren = 10; // Maxmimum amount of circles
     public float timeToSpawn;
-    private static Color[] colours = new Color[] { Color.cyan, Color.green, Color.magenta, Color.red, Color.yellow };
+	private static Color[] colours = new Color[] { Colours.greenish, Colours.pinkish, Colours.orangeish, Colours.redish, Colours.yellowish, Colours.lightblue };
 
 	void Start () {
 		mainCircleColour = colours [Random.Range (0, colours.Length)];
@@ -63,7 +63,7 @@ public class CircleSpawner : MonoBehaviour {
 				circlePool [i].transform.rotation = Quaternion.identity;
 				circlePool [i].transform.parent = gameObject.transform;
 
-				circlePool [i].GetComponent<SpriteRenderer> ().color = mainCircleColour;
+				circlePool [i].GetComponent<SpriteRenderer> ().color = colours [Random.Range (0, colours.Length)];
 				mainCircleColour = nextCircleColour;
 				mainCircleDisplay.color = mainCircleColour;
 				nextCircleColour = colours [Random.Range (0, colours.Length)];
