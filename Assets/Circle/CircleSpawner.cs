@@ -1,16 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CircleSpawner : MonoBehaviour {
-
+    
 	public GameObject circle;
-	public float radius;
+    public Image mainCircleDisplay;
+    public Image nextCircleDisplay;
+
+	private float radius;
     private List<GameObject> circlePool;
+    private Color mainCircleColour;
+    private Color nextCircleColour;
 
 	private int maxChildren = 10; // Maxmimum amount of circles
+    private float spawnDelay = 20f;
+    public  float timePassed = 0f;
+    private static Color[] colours = new Color[] { Color.cyan, Color.green, Color.magenta, Color.red, Color.yellow };
 
 	void Start () {
+        mainCircleColour = colours [Random.Range (0, colours.Length)];
+        mainCircleDisplay.color = mainCircleColour;
+        nextCircleColour = colours [Random.Range (0, colours.Length)];
+        nextCircleDisplay.color = nextCircleColour;
         circlePool = new List<GameObject>();
         for(int i = 0; i < maxChildren; i++)
         {
@@ -22,22 +35,18 @@ public class CircleSpawner : MonoBehaviour {
 	}
 
 	void Update () {
-		if (isTimeToSpawn ()) {
-			Spawn ();
-		}
+        timePassed += Time.deltaTime*10;
+        if (timePassed >= spawnDelay)
+        {
+            timePassed = 0;
+            Spawn();
+        }
 	}
 
-	bool isTimeToSpawn() {
+	//bool isTimeToSpawn() {
 		// TODO: Make a more efficient function? This one's just kinda gay and I took it from a different project.
-		float spawnDelay = 10;
 
-		if (Time.deltaTime > spawnDelay) 
-			Debug.LogWarning ("Spawn rate capped by frame rate.");
-
-		float threshold = spawnDelay * Time.deltaTime / 10f ;
-
-		return (Random.value < threshold);
-	}
+	//}
 
 	void Spawn() {
 		// TODO: Make circles not spawn on each other, either here or wherever comfortable.
@@ -51,6 +60,13 @@ public class CircleSpawner : MonoBehaviour {
                 circlePool[i].transform.position = screenPosition;
                 circlePool[i].transform.rotation = Quaternion.identity;
                 circlePool[i].transform.parent = gameObject.transform;
+
+                circlePool[i].GetComponent<SpriteRenderer> ().color = mainCircleColour;
+                mainCircleColour = nextCircleColour;
+                mainCircleDisplay.color = mainCircleColour;
+                nextCircleColour = colours [Random.Range (0, colours.Length)];
+                nextCircleDisplay.color = nextCircleColour;
+
                 circlePool[i].SetActive(true);
                 break;
             }
