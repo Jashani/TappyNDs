@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 90696dcd0501b33478c363ac2e9e4d60
+timeCreated: 1510917154
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Gliscor Gothic
+  fontNames:
+  - Gliscor Gothic
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
