@@ -16,6 +16,7 @@ public class CircleSpawner : MonoBehaviour {
 
 	private int maxChildren = 10; // Maxmimum amount of circles
     public float timeToSpawn;
+    public float timeToChange;
 	private static Color[] colours = new Color[] { Colours.greenish, Colours.pinkish, Colours.orangeish, Colours.redish, Colours.yellowish, Colours.lightblue };
 
 	void Start () {
@@ -37,13 +38,27 @@ public class CircleSpawner : MonoBehaviour {
 	}
 
 	void Update () {
+        UpdateSpawnTimer();
+        UpdateChangeTimer();
+	}
+
+    void UpdateSpawnTimer(){
         timeToSpawn -= Time.deltaTime;
         if (timeToSpawn <= 0)
         {
-            timeToSpawn = Random.Range(1, 2.5f);
+            timeToSpawn = Random.Range(0.5f, 1.5f);
             Spawn();
         }
-	}
+    }
+
+    void UpdateChangeTimer(){
+        timeToChange -= Time.deltaTime;
+        if (timeToChange <= 0)
+        {
+            timeToChange = Random.Range(3, 5);
+            ChangeColours();
+        }
+    }
 
 	//bool isTimeToSpawn() {
 		// TODO: Make a more efficient function? This one's just kinda gay and I took it from a different project.
@@ -61,14 +76,9 @@ public class CircleSpawner : MonoBehaviour {
 			{
 				circlePool [i].transform.position = screenPosition;
 				circlePool [i].transform.rotation = Quaternion.identity;
-				circlePool [i].transform.parent = gameObject.transform;
+                circlePool [i].transform.parent = gameObject.transform;
 
 				circlePool [i].GetComponent<SpriteRenderer> ().color = colours [Random.Range (0, colours.Length)];
-				mainCircleColour = nextCircleColour;
-				mainCircleDisplay.color = mainCircleColour;
-				nextCircleColour = colours [Random.Range (0, colours.Length)];
-				nextCircleDisplay.color = nextCircleColour;
-
 				circlePool [i].SetActive (true);
 				break;
 			}
@@ -76,6 +86,13 @@ public class CircleSpawner : MonoBehaviour {
         //GameObject newCircle = Instantiate (circle, screenPosition, Quaternion.identity);
 		//newCircle.transform.parent = gameObject.transform;
 	}
+
+    void ChangeColours(){
+        mainCircleColour = nextCircleColour;
+        mainCircleDisplay.color = mainCircleColour;
+        nextCircleColour = colours [Random.Range (0, colours.Length)];
+        nextCircleDisplay.color = nextCircleColour;
+    }
 
 	public Color getMain() { return mainCircleColour; }
 }
