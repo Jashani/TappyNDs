@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Circle : MonoBehaviour {
 
-	private static Color[] colours = new Color[] { Color.blue, Color.cyan, Color.green, Color.magenta, Color.red, Color.yellow };
+	public static Color[] colours = new Color[] { Color.cyan, Color.green, Color.magenta, Color.red, Color.yellow };
 	private Animator anim;
 
 	void OnEnable () {
