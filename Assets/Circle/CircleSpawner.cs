@@ -15,17 +15,23 @@ public class CircleSpawner : MonoBehaviour {
     private Color nextCircleColour;
 
 	private int maxChildren = 10; // Maxmimum amount of circles
+    private float minSpawnDelay = 1;
+    private float maxSpawnDelay = 2.5f;
+    private float mainColourChangeDelay = 5;//change
+
     public float timeToSpawn;
     public float timeToChange;
+    public List<Color> nextColourOptions;
+
 	private static Color[] colours = new Color[] { Colours.greenish, Colours.pinkish, Colours.orangeish, Colours.redish, Colours.yellowish, Colours.lightblue };
 
 	void Start () {
-		mainCircleColour = colours [Random.Range (0, colours.Length)];
-        mainCircleDisplay.color = mainCircleColour;
-        nextCircleColour = colours [Random.Range (0, colours.Length)];
+		nextCircleColour = colours [Random.Range (0, colours.Length)];
         nextCircleDisplay.color = nextCircleColour;
+        GetNextColour();
 
-		timeToSpawn = Random.Range (1, 2.5f);
+
+        timeToSpawn = Random.Range (minSpawnDelay, maxSpawnDelay);
 
         circlePool = new List<GameObject>();
         for(int i = 0; i < maxChildren; i++)
@@ -46,7 +52,7 @@ public class CircleSpawner : MonoBehaviour {
         timeToSpawn -= Time.deltaTime;
         if (timeToSpawn <= 0)
         {
-            timeToSpawn = Random.Range(0.5f, 1.5f);
+            timeToSpawn = Random.Range(minSpawnDelay, maxSpawnDelay);
             Spawn();
         }
     }
@@ -55,7 +61,7 @@ public class CircleSpawner : MonoBehaviour {
         timeToChange -= Time.deltaTime;
         if (timeToChange <= 0)
         {
-            timeToChange = Random.Range(3, 5);
+            timeToChange = mainColourChangeDelay;
             ChangeColours();
         }
     }
@@ -90,7 +96,31 @@ public class CircleSpawner : MonoBehaviour {
     void ChangeColours(){
         mainCircleColour = nextCircleColour;
         mainCircleDisplay.color = mainCircleColour;
-        nextCircleColour = colours [Random.Range (0, colours.Length)];
+        nextColourOptions = new List<Color>();
+        foreach (Color c in colours)
+        {
+            if(c != mainCircleColour)
+            {
+                nextColourOptions.Add(c);
+            }
+        }
+        nextCircleColour = nextColourOptions [Random.Range (0, nextColourOptions.Count)];
+        nextCircleDisplay.color = nextCircleColour;
+    }
+
+    private void GetNextColour()
+    {
+        mainCircleColour = nextCircleColour;
+        mainCircleDisplay.color = mainCircleColour;
+        nextColourOptions = new List<Color>();
+        foreach (Color c in colours)
+        {
+            if(c != mainCircleColour)
+            {
+                nextColourOptions.Add(c);
+            }
+        }
+        nextCircleColour = nextColourOptions [Random.Range (0, nextColourOptions.Count)];
         nextCircleDisplay.color = nextCircleColour;
     }
 
