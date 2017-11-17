@@ -33,4 +33,8 @@ public class Circle : MonoBehaviour {
 			FindObjectOfType<Score> ().addOnePoint ();
 		gameObject.SetActive(false);
 	}
+
+	void Deactivate () {
+		gameObject.SetActive(false);
+	}
 }
