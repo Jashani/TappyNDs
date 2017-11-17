@@ -5,9 +5,11 @@ using UnityEngine;
 public class Circle : MonoBehaviour {
 
 	private static Color[] colours = new Color[] { Color.blue, Color.cyan, Color.green, Color.magenta, Color.red, Color.yellow };
+	private Animator anim;
 
 	void OnEnable () {
 		GetComponent<SpriteRenderer> ().color = colours [Random.Range (0, colours.Length)];
+		anim = GetComponent<Animator> ();
 	}
 
 	void OnTriggerStay2D () {
@@ -17,7 +19,11 @@ public class Circle : MonoBehaviour {
 	}
 
 	void OnMouseDown () {
+		anim.Play ("Pop");
+	}
+
+	void Tapped () { // Called from 'Pop' animation.
 		FindObjectOfType<Score> ().addOnePoint ();
-        gameObject.SetActive(false);
+		gameObject.SetActive(false);
 	}
 }
