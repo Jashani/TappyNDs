@@ -15,8 +15,7 @@ public class CircleSpawner : MonoBehaviour {
     private Color nextCircleColour;
 
 	private int maxChildren = 10; // Maxmimum amount of circles
-    private float spawnDelay = 20f;
-    public  float timePassed = 0f;
+    public float timeToSpawn;
     private static Color[] colours = new Color[] { Color.cyan, Color.green, Color.magenta, Color.red, Color.yellow };
 
 	void Start () {
@@ -24,6 +23,9 @@ public class CircleSpawner : MonoBehaviour {
         mainCircleDisplay.color = mainCircleColour;
         nextCircleColour = colours [Random.Range (0, colours.Length)];
         nextCircleDisplay.color = nextCircleColour;
+
+        timeToSpawn = Random.Range(1, 2.5f);
+
         circlePool = new List<GameObject>();
         for(int i = 0; i < maxChildren; i++)
         {
@@ -35,10 +37,10 @@ public class CircleSpawner : MonoBehaviour {
 	}
 
 	void Update () {
-        timePassed += Time.deltaTime*10;
-        if (timePassed >= spawnDelay)
+        timeToSpawn -= Time.deltaTime;
+        if (timeToSpawn <= 0)
         {
-            timePassed = 0;
+            timeToSpawn = Random.Range(1, 2.5f);
             Spawn();
         }
 	}
