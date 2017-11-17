@@ -17,7 +17,7 @@ public class CircleSpawner : MonoBehaviour {
 	private int maxChildren = 10; // Maxmimum amount of circles
     private float minSpawnDelay = 1;
     private float maxSpawnDelay = 2.5f;
-    private float mainColourChangeDelay = 5;
+    private float mainColourChangeDelay = 5;//change
 
     public float timeToSpawn;
     public float timeToChange;
