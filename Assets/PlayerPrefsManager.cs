@@ -38,17 +38,17 @@ public class PlayerPrefsManager : MonoBehaviour {
 	}
 
 	public static void SetDifficulty (float difficulty){
-		if (difficulty >= 1f && difficulty <= 3f)
+		if (difficulty >= 0f && difficulty <= 1f)
 			PlayerPrefs.SetFloat (DIFFICULTY_KEY, difficulty);
 		else
-			PlayerPrefs.SetFloat (DIFFICULTY_KEY, 1f);
+			PlayerPrefs.SetFloat (DIFFICULTY_KEY, 0.5f);
 	}
 
 	public static float GetDifficulty (){ 
-		if (PlayerPrefs.GetFloat (DIFFICULTY_KEY) != null && PlayerPrefs.GetFloat (DIFFICULTY_KEY) >= 1f)
+		if (PlayerPrefs.GetFloat (DIFFICULTY_KEY) != null && PlayerPrefs.GetFloat (DIFFICULTY_KEY) >= 0f)
 			return PlayerPrefs.GetFloat (DIFFICULTY_KEY);
 		else
-			SetDifficulty (1f);
+			SetDifficulty (0.5f);
 		return 1f;
 	}
 }
