@@ -4,13 +4,26 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MusicManager : MonoBehaviour {
-
+	
 	public AudioClip[] levelMusicChangeArray;
 
-	private AudioSource audioSource;
+	private static AudioSource audioSource;
+
+	private static MusicManager instance = null;
+	public static MusicManager Instance { 
+		get { 
+			if (instance == null)
+				instance = (MusicManager)FindObjectOfType (typeof(MusicManager)); 
+			return instance; 
+		} 
+	}
 
 	void Awake () {
-		DontDestroyOnLoad (gameObject);
+		if (Instance != this) {
+			Destroy (gameObject);
+		} else {
+			DontDestroyOnLoad (gameObject);
+		}
 	}
 
 	void Start() {
