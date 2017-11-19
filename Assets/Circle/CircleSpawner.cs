@@ -23,7 +23,7 @@ public class CircleSpawner : MonoBehaviour {
     public float timeToChange;
     public List<Color> nextColourOptions;
 
-	private static Color[] colours = new Color[] { Colours.greenish, Colours.pinkish, Colours.orangeish, Colours.redish, Colours.yellowish, Colours.lightblue };
+	private static Color[] colours = Colours.smallSet;
 
 	void Start () {
 		nextCircleColour = colours [Random.Range (0, colours.Length)];
