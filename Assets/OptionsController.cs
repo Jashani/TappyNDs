@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,7 +23,11 @@ public class OptionsController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		try {
 		musicManager.SetVolume (volumeSlider.value);
+		} catch (Exception e) {
+			Debug.Log ("Level likely loaded solitarily.");
+		}
 	}
 
 	public void SaveAndExit(){
