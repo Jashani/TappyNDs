@@ -49,6 +49,10 @@
      <Compile Include="Assets\Circle\Circle.cs" />
      <Compile Include="Assets\Circle\CircleSpawner.cs" />
      <Compile Include="Assets\Colours.cs" />
+     <Compile Include="Assets\LevelManager.cs" />
+     <Compile Include="Assets\MusicManager.cs" />
+     <Compile Include="Assets\OptionsController.cs" />
+     <Compile Include="Assets\PlayerPrefsManager.cs" />
      <Compile Include="Assets\Score.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
