@@ -25,7 +25,7 @@ public class OptionsController : MonoBehaviour {
 	void Update () {
 		try {
 		musicManager.SetVolume (volumeSlider.value);
-		} catch (Exception e) {
+		} catch {
 			Debug.Log ("Level likely loaded solitarily.");
 		}
 	}
