@@ -686,23 +686,23 @@ MonoBehaviour:
     height: 629
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 5ef4ffff
-    m_LastClickedID: -2978
+    m_SelectedIDs: 
+    m_LastClickedID: 0
     m_ExpandedIDs: d8fbffff0000000070250000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: TopBar
-      m_OriginalName: TopBar
+      m_Name: RawImage
+      m_OriginalName: RawImage
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 9560
+      m_UserData: -1588
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 4
       m_IsRenamingFilename: 0
       m_ClientGUIView: {fileID: 5}
     m_SearchString: 
@@ -772,9 +772,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 1625.5608
+    m_Target: 1291.2789
     speed: 2
-    m_Value: 1625.5608
+    m_Value: 1291.2789
   m_Ortho:
     m_Target: 1
     speed: 2
