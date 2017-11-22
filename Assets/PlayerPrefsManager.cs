@@ -48,7 +48,7 @@ public class PlayerPrefsManager : MonoBehaviour {
 		if (PlayerPrefs.GetFloat (DIFFICULTY_KEY) != null && PlayerPrefs.GetFloat (DIFFICULTY_KEY) >= 0f)
 			return PlayerPrefs.GetFloat (DIFFICULTY_KEY);
 		else
-			SetDifficulty (0.5f);
+			SetDifficulty (0f);
 		return 1f;
 	}
 }

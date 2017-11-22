@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public class CircleSpawner : MonoBehaviour {
     
+	//TODO: Add lives concept.
+	//TODO: Program timer.
+	//TODO: Add difficulty concept (should be discussed obvs but this is just a reminder).
+
 	public GameObject circle;
     public Image mainCircleDisplay;
     public Image nextCircleDisplay;
@@ -17,7 +21,7 @@ public class CircleSpawner : MonoBehaviour {
 	private int maxChildren = 10; // Maxmimum amount of circles
     private float minSpawnDelay = 1;
     private float maxSpawnDelay = 2.5f;
-    private float mainColourChangeDelay = 5;//change
+    private float mainColourChangeDelay = 5;
 
     public float timeToSpawn;
     public float timeToChange;
@@ -66,30 +70,18 @@ public class CircleSpawner : MonoBehaviour {
         }
     }
 
-	//bool isTimeToSpawn() {
-		// TODO: Make a more efficient function? This one's just kinda gay and I took it from a different project.
-
-	//}
-
 	void Spawn() {
-		// TODO: Make circles not spawn on each other, either here or wherever comfortable.
-		// Also try to figure out a way to make them spawn away from the top UI.
-		// If creative enough do as you please, if not we'll just use distance constants or something, I don't know
-        for(int i = 0; i < circlePool.Count; i++)
-        {
-			if (!circlePool [i].activeInHierarchy) 
-			{
-                circlePool [i].transform.position = FindValidSpawn();
+		for (int i = 0; i < circlePool.Count; i++) {
+			if (!circlePool [i].activeInHierarchy) {
+				circlePool [i].transform.position = FindValidSpawn ();
 				circlePool [i].transform.rotation = Quaternion.identity;
-                circlePool [i].transform.parent = gameObject.transform;
+				circlePool [i].transform.parent = gameObject.transform;
 
 				circlePool [i].GetComponent<SpriteRenderer> ().color = colours [Random.Range (0, colours.Length)];
 				circlePool [i].SetActive (true);
 				break;
 			}
-        }
-        //GameObject newCircle = Instantiate (circle, screenPosition, Quaternion.identity);
-		//newCircle.transform.parent = gameObject.transform;
+		}
 	}
 
     void ChangeColours(){
@@ -125,31 +117,29 @@ public class CircleSpawner : MonoBehaviour {
 
 	public Color getMain() { return mainCircleColour; }
 
+	//TODO: Make circles avoid the top bar.
+
     Vector3 FindValidSpawn()
     {
         bool valid;
         int counter = 20;
         Vector3 spawnPoint = new Vector3(0, 0, 0);
-        do
-        {
-            counter--;
-            spawnPoint = Camera.main.ScreenToWorldPoint (new Vector3 (Random.Range (radius*100, Screen.width-radius*100), Random.Range (radius*100, Screen.height-radius*100), Camera.main.farClipPlane / 2));
-            valid = true;
-            foreach(GameObject g in circlePool)
-            {
-                if(g.activeInHierarchy)
-                {
-                    Debug.Log("distance: " + (spawnPoint - g.transform.position).magnitude.ToString());
-                    Debug.Log("radius*2: " + radius);
-                }
+		do {
+			counter--;
+			spawnPoint = Camera.main.ScreenToWorldPoint (new Vector3 (Random.Range (radius * 100, Screen.width - radius * 100), Random.Range (radius * 100, Screen.height - radius * 100), Camera.main.farClipPlane / 2));
+			valid = true;
+			foreach (GameObject g in circlePool) {
+				if (g.activeInHierarchy) {
+					Debug.Log ("distance: " + (spawnPoint - g.transform.position).magnitude.ToString ());
+					Debug.Log ("radius*2: " + radius);
+				}
 
-                if(g.activeInHierarchy && (spawnPoint - g.transform.position).magnitude < radius)
-                {
-                    valid = false;
-                    break;
-                }
-            }
-        }while(!valid && counter >= 0);
+				if (g.activeInHierarchy && (spawnPoint - g.transform.position).magnitude < radius) {
+					valid = false;
+					break;
+				}
+			}
+		} while(!valid && counter >= 0);
         return spawnPoint;
     }
 }
