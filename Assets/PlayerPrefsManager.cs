@@ -8,6 +8,7 @@ public class PlayerPrefsManager : MonoBehaviour {
 	const string MASTER_VOLUME_KEY = "master_volume";
 	const string DIFFICULTY_KEY = "difficulty";
 	const string LEVEL_KEY = "level_unlocked_"; // level_unlocked_1,2,3...
+	const string VULGARITY_KEY = "vulgarity";
 
 	public static void SetMasterVolume (float volume){
 		Debug.Log ("Volume: " + volume);
@@ -50,5 +51,19 @@ public class PlayerPrefsManager : MonoBehaviour {
 		else
 			SetDifficulty (0f);
 		return 1f;
+	}
+
+	public static void SetVulgarity (bool vulgarity){
+		if (vulgarity)
+			PlayerPrefs.SetInt (VULGARITY_KEY, 1);
+		else
+			PlayerPrefs.SetInt (VULGARITY_KEY, 0);
+	}
+
+	public static bool GetVulgarity (){
+		if (PlayerPrefs.GetInt (VULGARITY_KEY) == 1)
+			return true;
+		else
+			return false;
 	}
 }

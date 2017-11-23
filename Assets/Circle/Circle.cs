@@ -6,14 +6,17 @@ public class Circle : MonoBehaviour {
 
 	private Animator anim;
 	private CircleSpawner spawner;
+	private SoundManager soundManager;
 
     void Start()
     {
         anim = GetComponent<Animator> ();
 		spawner = FindObjectOfType<CircleSpawner>();
+		soundManager = FindObjectOfType<SoundManager> ();
     }
 
 	void OnMouseDown () {
+		soundManager.PopSound ();
 		anim.Play ("Pop");
 	}
 

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class OptionsController : MonoBehaviour {
 
 	public Slider volumeSlider, difficultySlider;
+	public Toggle vulgarityToggle;
 	public LevelManager levelManager;
 
 	private MusicManager musicManager;
@@ -16,6 +17,7 @@ public class OptionsController : MonoBehaviour {
 		musicManager = GameObject.FindObjectOfType<MusicManager> ();
 		volumeSlider.value = PlayerPrefsManager.GetMasterVolume ();
 		difficultySlider.value = PlayerPrefsManager.GetDifficulty ();
+		vulgarityToggle.isOn = PlayerPrefsManager.GetVulgarity ();
 	}
 
 	// Update is called once per frame
@@ -30,11 +32,13 @@ public class OptionsController : MonoBehaviour {
 	public void SaveAndExit(){
 		PlayerPrefsManager.SetMasterVolume (volumeSlider.value);
 		PlayerPrefsManager.SetDifficulty (difficultySlider.value);
+		PlayerPrefsManager.SetVulgarity (vulgarityToggle.isOn);
 		levelManager.LoadLevel ("01a MainMenu");
 	}
 
 	public void SetDefaults(){
 		volumeSlider.value = 0.8f;
 		difficultySlider.value = 0.5f;
+		vulgarityToggle.isOn = false;
 	}
 }
