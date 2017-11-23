@@ -12,6 +12,7 @@ public class CircleSpawner : MonoBehaviour {
 	public GameObject circle;
     public Image mainCircleDisplay;
     public Image nextCircleDisplay;
+    public Image progressBar;
 
 	private float radius;
     private List<GameObject> circlePool;
@@ -22,9 +23,12 @@ public class CircleSpawner : MonoBehaviour {
     private float minSpawnDelay = 1;
     private float maxSpawnDelay = 2.5f;
     private float mainColourChangeDelay = 5;
+    private float gracePeriodDuration = 1;
+    private bool gracePeriodOn = false;
 
-    public float timeToSpawn;
-    public float timeToChange;
+    public static float timeToSpawn;
+    public static float timeToChange;
+    public static float timeToEndGrace;
     public List<Color> nextColourOptions;
 
 	private static Color[] colours = Colours.smallSet;
@@ -49,7 +53,10 @@ public class CircleSpawner : MonoBehaviour {
 
 	void Update () {
         UpdateSpawnTimer();
-        UpdateChangeTimer();
+        if(gracePeriodOn)
+            UpdateGracePeriodTimer();
+        else
+            UpdateChangeTimer();
 	}
 
     void UpdateSpawnTimer(){
@@ -63,10 +70,21 @@ public class CircleSpawner : MonoBehaviour {
 
     void UpdateChangeTimer(){
         timeToChange -= Time.deltaTime;
+        SetProgressBar(1- timeToChange/mainColourChangeDelay);
         if (timeToChange <= 0)
         {
             timeToChange = mainColourChangeDelay;
             ChangeColours();
+        }
+    }
+
+    void UpdateGracePeriodTimer(){
+        timeToEndGrace -= Time.deltaTime;
+        SetProgressBar(timeToEndGrace/gracePeriodDuration);
+        if (timeToEndGrace <= 0)
+        {
+            timeToEndGrace = gracePeriodDuration;
+            gracePeriodOn = false;
         }
     }
 
@@ -97,6 +115,8 @@ public class CircleSpawner : MonoBehaviour {
         }
         nextCircleColour = nextColourOptions [Random.Range (0, nextColourOptions.Count)];
         nextCircleDisplay.color = nextCircleColour;
+        gracePeriodOn = true;
+        progressBar.color = mainCircleColour;
     }
 
     private void GetNextColour()
@@ -141,5 +161,10 @@ public class CircleSpawner : MonoBehaviour {
 			}
 		} while(!valid && counter >= 0);
         return spawnPoint;
+    }
+
+    void SetProgressBar(float percentage)
+    {
+        progressBar.fillAmount = percentage * 0.42f + 0.041f;
     }
 }
