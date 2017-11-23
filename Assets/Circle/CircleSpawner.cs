@@ -70,7 +70,7 @@ public class CircleSpawner : MonoBehaviour {
 
     void UpdateChangeTimer(){
         timeToChange -= Time.deltaTime;
-        SetProgressBar(1- timeToChange/mainColourChangeDelay);
+        SetProgressBar(timeToChange/mainColourChangeDelay);
         if (timeToChange <= 0)
         {
             timeToChange = mainColourChangeDelay;
@@ -80,7 +80,7 @@ public class CircleSpawner : MonoBehaviour {
 
     void UpdateGracePeriodTimer(){
         timeToEndGrace -= Time.deltaTime;
-        SetProgressBar(timeToEndGrace/gracePeriodDuration);
+        SetProgressBar(1- timeToEndGrace/gracePeriodDuration);
         if (timeToEndGrace <= 0)
         {
             timeToEndGrace = gracePeriodDuration;
