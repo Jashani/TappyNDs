@@ -21,7 +21,7 @@ public class SoundManager : MonoBehaviour {
 		if (vulgar && vulgarClips != null && vulgarClips.Length != 0)
 			audioSource.clip = vulgarClips [Random.Range (0, vulgarClips.Length)];
 		else if (regularClips != null && regularClips.Length != 0)
-			audioSource.clip = regularClips [Random.Range (0, vulgarClips.Length)];
+			audioSource.clip = regularClips [Random.Range (0, regularClips.Length)];
 		else
 			return;
 		audioSource.Play ();
