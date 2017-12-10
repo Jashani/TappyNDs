@@ -13,11 +13,14 @@ public class CircleSpawner : MonoBehaviour {
     public Image mainCircleDisplay;
     public Image nextCircleDisplay;
     public Image progressBar;
+    public RectTransform topBar;
 
 	private float radius;
+    private float topBarHeight;
     private List<GameObject> circlePool;
 	private Color mainCircleColour;
     private Color nextCircleColour;
+
 
 	private int maxChildren = 10; // Maxmimum amount of circles
     private float minSpawnDelay = 1;
@@ -26,10 +29,14 @@ public class CircleSpawner : MonoBehaviour {
     private float gracePeriodDuration = 1;
     private bool gracePeriodOn = false;
 
+    public float spawnNormalisationFactor;
     public static float timeToSpawn;
     public static float timeToChange;
     public static float timeToEndGrace;
     public List<Color> nextColourOptions;
+    public List<float> colourProbabilities;
+    public float[] spawnedSoFar;
+    public float[] spawnedSoFarReal;
 
 	private static Color[] colours = Colours.smallSet;
 
@@ -38,6 +45,16 @@ public class CircleSpawner : MonoBehaviour {
         nextCircleDisplay.color = nextCircleColour;
         GetNextColour();
 
+        colourProbabilities = new List<float>();
+        for(int i = 0; i < colours.Length; i++)
+            colourProbabilities.Add(1.0f/colours.Length);
+
+        spawnedSoFar = new float[colours.Length];
+        for(int i = 0; i < spawnedSoFar.Length; i++)
+            spawnedSoFar[i] = 1f;
+        spawnedSoFarReal = new float[colours.Length];
+        for(int i = 0; i < spawnedSoFarReal.Length; i++)
+            spawnedSoFarReal[i] = 0f;
 
         timeToSpawn = Random.Range (minSpawnDelay, maxSpawnDelay);
 
@@ -49,6 +66,7 @@ public class CircleSpawner : MonoBehaviour {
 			circlePool.Add (obj);
         }
 		radius = circle.GetComponent<CircleCollider2D> ().radius;
+        topBarHeight = topBar.rect.height;
 	}
 
 	void Update () {
@@ -95,7 +113,8 @@ public class CircleSpawner : MonoBehaviour {
 				circlePool [i].transform.rotation = Quaternion.identity;
 				circlePool [i].transform.parent = gameObject.transform;
 
-				circlePool [i].GetComponent<SpriteRenderer> ().color = colours [Random.Range (0, colours.Length)];
+				//circlePool [i].GetComponent<SpriteRenderer> ().color = colours [Random.Range (0, colours.Length)];
+                circlePool [i].GetComponent<SpriteRenderer> ().color = randomColour();
 				circlePool [i].SetActive (true);
 				break;
 			}
@@ -137,8 +156,6 @@ public class CircleSpawner : MonoBehaviour {
 
 	public Color getMain() { return mainCircleColour; }
 
-	//TODO: Make circles avoid the top bar.
-
     Vector3 FindValidSpawn()
     {
         bool valid;
@@ -146,14 +163,9 @@ public class CircleSpawner : MonoBehaviour {
         Vector3 spawnPoint = new Vector3(0, 0, 0);
 		do {
 			counter--;
-			spawnPoint = Camera.main.ScreenToWorldPoint (new Vector3 (Random.Range (radius * 100, Screen.width - radius * 100), Random.Range (radius * 100, Screen.height - radius * 100), Camera.main.farClipPlane / 2));
-			valid = true;
+			spawnPoint = Camera.main.ScreenToWorldPoint (new Vector3 (Random.Range (radius * 100, Screen.width - radius * 100), Random.Range (radius * 100, Screen.height - radius * 100 - topBarHeight), Camera.main.farClipPlane / 2));
+            valid = true;
 			foreach (GameObject g in circlePool) {
-				if (g.activeInHierarchy) {
-					Debug.Log ("distance: " + (spawnPoint - g.transform.position).magnitude.ToString ());
-					Debug.Log ("radius*2: " + radius);
-				}
-
 				if (g.activeInHierarchy && (spawnPoint - g.transform.position).magnitude < radius) {
 					valid = false;
 					break;
@@ -166,5 +178,66 @@ public class CircleSpawner : MonoBehaviour {
     void SetProgressBar(float percentage)
     {
         progressBar.fillAmount = percentage * 0.42f + 0.041f;
+    }
+     
+    Color randomColour()
+    {
+        //colourProbabilities.Sort();
+        float[] copy = colourProbabilities.ToArray();
+        float value = Random.Range(0f, 1f);
+        for(int i = 1; i < copy.Length; i++)
+        {
+            copy[i] = copy[i]+copy[i-1];
+            if(value > copy[i-1] && value <= copy[i])
+            {
+                updateProbabilities(i);
+                return colours[i];
+            }     
+        }
+        updateProbabilities(0);
+        return colours[0];
+    }
+
+    void updateProbabilities(int i)
+    {
+        //Assign probabilities
+        spawnedSoFar[i] += spawnNormalisationFactor;
+        spawnedSoFarReal[i]++;
+        for(int j = 0; j < spawnedSoFar.Length; j++)
+        {
+            spawnedSoFar[j] *= spawnedSoFar.Length / (spawnedSoFar.Length+spawnNormalisationFactor);
+            colourProbabilities[j] = (spawnedSoFar.Length-spawnedSoFar[j])/12;
+        }
+
+        //Take primary colour into account
+        int mainColourIndex = 0;
+        for(int j = 0; j < colours.Length; j++)
+        {
+            if(colours[j] == mainCircleColour)
+            {
+                mainColourIndex = j;
+                break;
+            }
+        }
+        float dif = colourProbabilities[mainColourIndex];
+        float sum = 1 - colourProbabilities[mainColourIndex];
+        colourProbabilities[mainColourIndex] *= 2;
+        for(int j = 0; j < colourProbabilities.Count; j++)
+            if(j != mainColourIndex)
+                colourProbabilities[j] -= colourProbabilities[j]/sum*dif;
+
+        //Increase the chance of the colour which has been seen the least recently
+        int smallestI = 0;
+        float smallest = spawnedSoFar[0];
+        for(int j = 1; j < spawnedSoFar.Length; j++)
+            if (spawnedSoFar[j] < smallest)
+                smallestI = j;
+        Debug.Log(smallestI);
+        dif = colourProbabilities[smallestI]/2;
+        sum = 1 - colourProbabilities[smallestI];
+        colourProbabilities[smallestI] *= 1.5f;
+        for(int j = 0; j < colourProbabilities.Count; j++)
+            if(j != smallestI)
+                colourProbabilities[j] -= colourProbabilities[j]/sum*dif;
     }
 }
